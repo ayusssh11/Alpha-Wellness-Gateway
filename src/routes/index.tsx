@@ -23,7 +23,20 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      "wistia-player": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { "media-id"?: string; aspect?: string; class?: string }, HTMLElement>;
+      "wistia-player": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & { "media-id"?: string; aspect?: string; class?: string; className?: string },
+        HTMLElement
+      >;
+    }
+  }
+  namespace React {
+    namespace JSX {
+      interface IntrinsicElements {
+        "wistia-player": React.DetailedHTMLProps<
+          React.HTMLAttributes<HTMLElement> & { "media-id"?: string; aspect?: string; class?: string; className?: string },
+          HTMLElement
+        >;
+      }
     }
   }
 }
@@ -264,9 +277,9 @@ function Hero({ onOpenConsult }: { onOpenConsult: () => void }) {
             <div className="mt-10 flex flex-wrap gap-4">
               <button
                 onClick={onOpenConsult}
-                className="group inline-flex items-center gap-3 px-7 h-14 rounded-full bg-gold text-navy text-[13px] tracking-[0.18em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer"
+                className="group inline-flex items-center justify-center whitespace-nowrap gap-2.5 px-5 sm:px-7 h-14 rounded-full bg-gold text-navy text-[11px] sm:text-[13px] tracking-[0.15em] sm:tracking-[0.18em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer"
               >
-                Book Free Consultation
+                <span>Book Free Consultation</span>
                 <span className="transition-transform group-hover:translate-x-1">→</span>
               </button>
               <a
@@ -1052,20 +1065,20 @@ function Experience() {
           </Reveal>
         </div>
 
-        <div className="mt-10 grid grid-cols-12 gap-4 lg:gap-6 auto-rows-[160px] lg:auto-rows-[200px]">
-          <Reveal className="col-span-12 lg:col-span-8 row-span-3">
+        <div className="mt-10 grid grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-6 auto-rows-[220px] lg:auto-rows-[200px]">
+          <Reveal className="col-span-2 lg:col-span-8 row-span-1 lg:row-span-3">
             <GalleryTile src={gallery2} alt="Row of luxury cottages surrounded by green lawns" caption="40 Acres · 18 Private Villas" />
           </Reveal>
-          <Reveal delay={120} className="col-span-6 lg:col-span-4 row-span-2">
+          <Reveal delay={120} className="col-span-1 lg:col-span-4 row-span-1 lg:row-span-2">
             <GalleryTile src={gallery1} alt="Paved path leading to white modern wellness pavilion" caption="Wellness Pavilion" />
           </Reveal>
-          <Reveal delay={200} className="col-span-6 lg:col-span-4 row-span-1">
+          <Reveal delay={200} className="col-span-1 lg:col-span-4 row-span-1 lg:row-span-1">
             <GalleryTile src={galleryVeranda} alt="Private wooden veranda of a villa with a deck lounge chair" caption="Private Verandas" />
           </Reveal>
-          <Reveal delay={280} className="col-span-6 lg:col-span-5 row-span-2">
+          <Reveal delay={280} className="col-span-1 lg:col-span-5 row-span-1 lg:row-span-2">
             <GalleryTile src={gallery3} alt="Glass-walled villa illuminated during golden hour sunset" caption="Sunset Sanctuary" />
           </Reveal>
-          <Reveal delay={360} className="col-span-6 lg:col-span-7 row-span-2">
+          <Reveal delay={360} className="col-span-1 lg:col-span-7 row-span-1 lg:row-span-2">
             <GalleryTile src={galleryPath} alt="Paved stone path winding through lush green gardens" caption="Healing Forest Paths" />
           </Reveal>
         </div>
@@ -1076,17 +1089,23 @@ function Experience() {
 
 function GalleryTile({ src, alt, caption }: { src: string; alt: string; caption: string }) {
   return (
-    <figure className="relative w-full h-full overflow-hidden rounded-2xl group">
+    <figure className="relative w-full h-full overflow-hidden rounded-2xl group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500">
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.4s]"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.4s] ease-out"
         loading="lazy"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-      <figcaption className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white">
-        <span className="eyebrow text-white/90">{caption}</span>
-        <span className="text-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+      <figcaption className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-10">
+        <div className="glass backdrop-blur-md bg-black/10 border-white/10 rounded-xl px-3 py-2 sm:px-4 sm:py-3 flex items-center justify-between transition-all duration-500 group-hover:border-gold/30">
+          <span className="eyebrow text-white tracking-[0.2em] text-[9px] sm:text-xs font-light truncate mr-2">
+            {caption}
+          </span>
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/10 flex items-center justify-center border border-white/15 group-hover:border-gold/50 group-hover:bg-gold group-hover:text-navy transition-all duration-500 shrink-0">
+            <span className="text-white group-hover:text-navy transition-colors text-[10px] sm:text-xs">→</span>
+          </div>
+        </div>
       </figcaption>
     </figure>
   );
@@ -1223,9 +1242,10 @@ function FinalCta({ onOpenConsult }: { onOpenConsult: () => void }) {
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <button
               onClick={onOpenConsult}
-              className="inline-flex items-center gap-3 px-9 h-15 py-4 rounded-full bg-gold text-navy text-[13px] tracking-[0.2em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer"
+              className="group inline-flex items-center justify-center whitespace-nowrap gap-2.5 px-6 sm:px-9 h-14 sm:h-15 rounded-full bg-gold text-navy text-[11px] sm:text-[13px] tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer"
             >
-              Book Free Consultation →
+              <span>Book Free Consultation</span>
+              <span className="transition-transform group-hover:translate-x-1">→</span>
             </button>
             <a
               href="https://wa.me/910000000000"
