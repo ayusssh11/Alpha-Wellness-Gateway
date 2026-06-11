@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useEffect, useRef, useState } from "react";
 
 import heroImg from "@/assets/images/hero-section-1536x1024.jpg.jpeg";
-import heroVideo from "@/assets/Alpha without logo but old.webm";
+import heroVideo from "@/assets/hero-loop.webm";
 import logoDark from "@/assets/dark_logo.png";
 import logoLight from "@/assets/images/white-logo-768x573.png";
 import problemImg from "@/assets/images/DSC05737-scaled.jpg.jpeg";
