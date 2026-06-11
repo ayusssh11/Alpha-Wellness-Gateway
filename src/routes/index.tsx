@@ -18,6 +18,8 @@ import galleryPath from "@/assets/images/DSC05563-scaled.jpg.jpeg";
 import galleryVeranda from "@/assets/images/DSC05639-scaled.jpg.jpeg";
 import galleryLobbyNight from "@/assets/images/DSC05870-scaled.jpg.jpeg";
 
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -280,14 +282,14 @@ function Hero({ onOpenConsult }: { onOpenConsult: () => void }) {
 
       {/* Stat strip */}
       <div className="relative z-10 border-t border-white/15 bg-black/30 backdrop-blur-sm">
-        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center sm:place-items-start">
           {[
             ["99%", "Satisfaction"],
             ["20+", "Years Experience"],
             ["28+", "Specialists"],
             ["5,000+", "Patients Healed"],
           ].map(([n, l]) => (
-            <div key={l} className="text-white">
+            <div key={l} className="text-white text-center sm:text-left">
               <div className="font-display text-3xl lg:text-4xl text-gold">{n}</div>
               <div className="eyebrow text-white/60 mt-1">{l}</div>
             </div>
@@ -999,7 +1001,19 @@ function DoctorInsights() {
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="mt-14 block sm:hidden">
+          <Carousel opts={{ align: "start", dragFree: true }} className="w-full overflow-visible">
+            <CarouselContent className="-ml-4 max-w-[85vw]">
+              {mediaIds.map((id, index) => (
+                <CarouselItem key={`${id}-${index}`} className="pl-4 basis-full">
+                  <WistiaVideo mediaId={id} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
+
+        <div className="mt-14 hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {mediaIds.map((id, index) => (
             <Reveal key={`${id}-${index}`} delay={index * 150}>
               <WistiaVideo mediaId={id} />
