@@ -1,7 +1,13 @@
 import { r as __toESM } from "../_runtime.mjs";
 import { t as hero_section_1536x1024_jpg_default } from "./hero-section-1536x1024.jpg-8OKI4y7H.mjs";
-import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-Dtzrxk6a.js
+import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
+import { n as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
+import { t as useEmblaCarousel } from "../_libs/embla-carousel-react+[...].mjs";
+import { n as ArrowLeft, t as ArrowRight } from "../_libs/lucide-react.mjs";
+import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
+import { t as twMerge } from "../_libs/tailwind-merge.mjs";
+import { t as Slot } from "../_libs/radix-ui__react-slot.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DZRrMpD8.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var Alpha_without_logo_but_old_default = "/assets/Alpha%20without%20logo%20but%20old-hYLRZdzH.webm";
@@ -17,6 +23,170 @@ var DSC05756_scaled_jpg_default = "/assets/DSC05756-scaled.jpg-CeNBizP3.jpeg";
 var DSC05925_scaled_jpg_default = "/assets/DSC05925-scaled.jpg-m4u74jSH.jpeg";
 var DSC05563_scaled_jpg_default = "/assets/DSC05563-scaled.jpg-DbE6jDV4.jpeg";
 var DSC05639_scaled_jpg_default = "/assets/DSC05639-scaled.jpg-B-0zXLDq.jpeg";
+function cn(...inputs) {
+	return twMerge(clsx(inputs));
+}
+var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", {
+	variants: {
+		variant: {
+			default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+			destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+			outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+			secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+			ghost: "hover:bg-accent hover:text-accent-foreground",
+			link: "text-primary underline-offset-4 hover:underline"
+		},
+		size: {
+			default: "h-9 px-4 py-2",
+			sm: "h-8 rounded-md px-3 text-xs",
+			lg: "h-10 rounded-md px-8",
+			icon: "h-9 w-9"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+var Button = import_react.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot : "button", {
+		className: cn(buttonVariants({
+			variant,
+			size,
+			className
+		})),
+		ref,
+		...props
+	});
+});
+Button.displayName = "Button";
+var CarouselContext = import_react.createContext(null);
+function useCarousel() {
+	const context = import_react.useContext(CarouselContext);
+	if (!context) throw new Error("useCarousel must be used within a <Carousel />");
+	return context;
+}
+var Carousel = import_react.forwardRef(({ orientation = "horizontal", opts, setApi, plugins, className, children, ...props }, ref) => {
+	const [carouselRef, api] = useEmblaCarousel({
+		...opts,
+		axis: orientation === "horizontal" ? "x" : "y"
+	}, plugins);
+	const [canScrollPrev, setCanScrollPrev] = import_react.useState(false);
+	const [canScrollNext, setCanScrollNext] = import_react.useState(false);
+	const onSelect = import_react.useCallback((api) => {
+		if (!api) return;
+		setCanScrollPrev(api.canScrollPrev());
+		setCanScrollNext(api.canScrollNext());
+	}, []);
+	const scrollPrev = import_react.useCallback(() => {
+		api?.scrollPrev();
+	}, [api]);
+	const scrollNext = import_react.useCallback(() => {
+		api?.scrollNext();
+	}, [api]);
+	const handleKeyDown = import_react.useCallback((event) => {
+		if (event.key === "ArrowLeft") {
+			event.preventDefault();
+			scrollPrev();
+		} else if (event.key === "ArrowRight") {
+			event.preventDefault();
+			scrollNext();
+		}
+	}, [scrollPrev, scrollNext]);
+	import_react.useEffect(() => {
+		if (!api || !setApi) return;
+		setApi(api);
+	}, [api, setApi]);
+	import_react.useEffect(() => {
+		if (!api) return;
+		onSelect(api);
+		api.on("reInit", onSelect);
+		api.on("select", onSelect);
+		return () => {
+			api?.off("select", onSelect);
+		};
+	}, [api, onSelect]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CarouselContext.Provider, {
+		value: {
+			carouselRef,
+			api,
+			opts,
+			orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+			scrollPrev,
+			scrollNext,
+			canScrollPrev,
+			canScrollNext
+		},
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			ref,
+			onKeyDownCapture: handleKeyDown,
+			className: cn("relative", className),
+			role: "region",
+			"aria-roledescription": "carousel",
+			...props,
+			children
+		})
+	});
+});
+Carousel.displayName = "Carousel";
+var CarouselContent = import_react.forwardRef(({ className, ...props }, ref) => {
+	const { carouselRef, orientation } = useCarousel();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref: carouselRef,
+		className: "overflow-hidden",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			ref,
+			className: cn("flex", orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", className),
+			...props
+		})
+	});
+});
+CarouselContent.displayName = "CarouselContent";
+var CarouselItem = import_react.forwardRef(({ className, ...props }, ref) => {
+	const { orientation } = useCarousel();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref,
+		role: "group",
+		"aria-roledescription": "slide",
+		className: cn("min-w-0 shrink-0 grow-0 basis-full", orientation === "horizontal" ? "pl-4" : "pt-4", className),
+		...props
+	});
+});
+CarouselItem.displayName = "CarouselItem";
+var CarouselPrevious = import_react.forwardRef(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+	const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+		ref,
+		variant,
+		size,
+		className: cn("absolute  h-8 w-8 rounded-full", orientation === "horizontal" ? "-left-12 top-1/2 -translate-y-1/2" : "-top-12 left-1/2 -translate-x-1/2 rotate-90", className),
+		disabled: !canScrollPrev,
+		onClick: scrollPrev,
+		...props,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowLeft, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+			className: "sr-only",
+			children: "Previous slide"
+		})]
+	});
+});
+CarouselPrevious.displayName = "CarouselPrevious";
+var CarouselNext = import_react.forwardRef(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+	const { orientation, scrollNext, canScrollNext } = useCarousel();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+		ref,
+		variant,
+		size,
+		className: cn("absolute h-8 w-8 rounded-full", orientation === "horizontal" ? "-right-12 top-1/2 -translate-y-1/2" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90", className),
+		disabled: !canScrollNext,
+		onClick: scrollNext,
+		...props,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+			className: "sr-only",
+			children: "Next slide"
+		})]
+	});
+});
+CarouselNext.displayName = "CarouselNext";
 function useReveal() {
 	const ref = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
@@ -223,8 +393,8 @@ function Hero({ onOpenConsult }) {
 								className: "mt-10 flex flex-wrap gap-4",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 									onClick: onOpenConsult,
-									className: "group inline-flex items-center gap-3 px-7 h-14 rounded-full bg-gold text-navy text-[13px] tracking-[0.18em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer",
-									children: ["Book Free Consultation", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "group inline-flex items-center justify-center whitespace-nowrap gap-2.5 px-5 sm:px-7 h-14 rounded-full bg-gold text-navy text-[11px] sm:text-[13px] tracking-[0.15em] sm:tracking-[0.18em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Book Free Consultation" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 										className: "transition-transform group-hover:translate-x-1",
 										children: "→"
 									})]
@@ -241,14 +411,14 @@ function Hero({ onOpenConsult }) {
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "relative z-10 border-t border-white/15 bg-black/30 backdrop-blur-sm",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "mx-auto max-w-[1400px] px-6 lg:px-12 py-8 grid grid-cols-2 md:grid-cols-4 gap-6",
+					className: "mx-auto max-w-[1400px] px-6 lg:px-12 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center sm:place-items-start",
 					children: [
 						["99%", "Satisfaction"],
 						["20+", "Years Experience"],
 						["28+", "Specialists"],
 						["5,000+", "Patients Healed"]
 					].map(([n, l]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-white",
+						className: "text-white text-center sm:text-left",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "font-display text-3xl lg:text-4xl text-gold",
 							children: n
@@ -1023,42 +1193,63 @@ function WistiaVideo({ mediaId }) {
 	});
 }
 function DoctorInsights() {
+	const mediaIds = [
+		"p9r5oj1rrp",
+		"l103j0xqiv",
+		"egsqur40gr",
+		"lekt68oa2p"
+	];
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
 		className: "bg-sand text-ink py-16 lg:py-24 border-t border-ink/5",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			className: "mx-auto max-w-[1400px] px-6 lg:px-12",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Reveal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-center justify-center gap-3 mb-6 flex-wrap",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gold-rule w-8 md:w-12" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						className: "eyebrow text-forest whitespace-nowrap",
-						children: "Expert Guidance"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gold-rule w-8 md:w-12" })
-				]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
-				className: "font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-[0.98] text-center max-w-2xl mx-auto",
-				children: [
-					"Insights from",
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", {
-						className: "italic",
-						children: "our doctors."
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Reveal, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-center gap-3 mb-6 flex-wrap",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gold-rule w-8 md:w-12" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "eyebrow text-forest whitespace-nowrap",
+							children: "Expert Guidance"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gold-rule w-8 md:w-12" })
+					]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
+					className: "font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-[0.98] text-center max-w-2xl mx-auto",
+					children: [
+						"Insights from",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", {
+							className: "italic",
+							children: "our doctors."
+						})
+					]
+				})] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "mt-14 block sm:hidden",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Carousel, {
+						opts: {
+							align: "start",
+							dragFree: true
+						},
+						className: "w-full overflow-visible",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CarouselContent, {
+							className: "-ml-4 max-w-[85vw]",
+							children: mediaIds.map((id, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CarouselItem, {
+								className: "pl-4 basis-full",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WistiaVideo, { mediaId: id })
+							}, `${id}-${index}`))
+						})
 					})
-				]
-			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8",
-				children: [
-					"p9r5oj1rrp",
-					"l103j0xqiv",
-					"egsqur40gr",
-					"lekt68oa2p"
-				].map((id, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Reveal, {
-					delay: index * 150,
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WistiaVideo, { mediaId: id })
-				}, `${id}-${index}`))
-			})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "mt-14 hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8",
+					children: mediaIds.map((id, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Reveal, {
+						delay: index * 150,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(WistiaVideo, { mediaId: id })
+					}, `${id}-${index}`))
+				})
+			]
 		})
 	});
 }
@@ -1097,10 +1288,10 @@ function Experience() {
 					})
 				})]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "mt-10 grid grid-cols-12 gap-4 lg:gap-6 auto-rows-[160px] lg:auto-rows-[200px]",
+				className: "mt-10 grid grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-6 auto-rows-[220px] lg:auto-rows-[200px]",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Reveal, {
-						className: "col-span-12 lg:col-span-8 row-span-3",
+						className: "col-span-2 lg:col-span-8 row-span-1 lg:row-span-3",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GalleryTile, {
 							src: DSC05744_scaled_jpg_default,
 							alt: "Row of luxury cottages surrounded by green lawns",
@@ -1109,7 +1300,7 @@ function Experience() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Reveal, {
 						delay: 120,
-						className: "col-span-6 lg:col-span-4 row-span-2",
+						className: "col-span-1 lg:col-span-4 row-span-1 lg:row-span-2",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GalleryTile, {
 							src: DSC05710_scaled_jpg_default,
 							alt: "Paved path leading to white modern wellness pavilion",
@@ -1118,7 +1309,7 @@ function Experience() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Reveal, {
 						delay: 200,
-						className: "col-span-6 lg:col-span-4 row-span-1",
+						className: "col-span-1 lg:col-span-4 row-span-1 lg:row-span-1",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GalleryTile, {
 							src: DSC05639_scaled_jpg_default,
 							alt: "Private wooden veranda of a villa with a deck lounge chair",
@@ -1127,7 +1318,7 @@ function Experience() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Reveal, {
 						delay: 280,
-						className: "col-span-6 lg:col-span-5 row-span-2",
+						className: "col-span-1 lg:col-span-5 row-span-1 lg:row-span-2",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GalleryTile, {
 							src: DSC05756_scaled_jpg_default,
 							alt: "Glass-walled villa illuminated during golden hour sunset",
@@ -1136,7 +1327,7 @@ function Experience() {
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Reveal, {
 						delay: 360,
-						className: "col-span-6 lg:col-span-7 row-span-2",
+						className: "col-span-1 lg:col-span-7 row-span-1 lg:row-span-2",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GalleryTile, {
 							src: DSC05563_scaled_jpg_default,
 							alt: "Paved stone path winding through lush green gardens",
@@ -1150,24 +1341,30 @@ function Experience() {
 }
 function GalleryTile({ src, alt, caption }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "relative w-full h-full overflow-hidden rounded-2xl group",
+		className: "relative w-full h-full overflow-hidden rounded-2xl group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 				src,
 				alt,
-				className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.4s]",
+				className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.4s] ease-out",
 				loading: "lazy"
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
-				className: "absolute bottom-5 left-5 right-5 flex items-center justify-between text-white",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "eyebrow text-white/90",
-					children: caption
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "text-gold opacity-0 group-hover:opacity-100 transition-opacity",
-					children: "→"
-				})]
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("figcaption", {
+				className: "absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-10",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "glass backdrop-blur-md bg-black/10 border-white/10 rounded-xl px-3 py-2 sm:px-4 sm:py-3 flex items-center justify-between transition-all duration-500 group-hover:border-gold/30",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "eyebrow text-white tracking-[0.2em] text-[9px] sm:text-xs font-light truncate mr-2",
+						children: caption
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/10 flex items-center justify-center border border-white/15 group-hover:border-gold/50 group-hover:bg-gold group-hover:text-navy transition-all duration-500 shrink-0",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "text-white group-hover:text-navy transition-colors text-[10px] sm:text-xs",
+							children: "→"
+						})
+					})]
+				})
 			})
 		]
 	});
@@ -1351,10 +1548,13 @@ function FinalCta({ onOpenConsult }) {
 					delay: 400,
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "mt-12 flex flex-wrap justify-center gap-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 							onClick: onOpenConsult,
-							className: "inline-flex items-center gap-3 px-9 h-15 py-4 rounded-full bg-gold text-navy text-[13px] tracking-[0.2em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer",
-							children: "Book Free Consultation →"
+							className: "group inline-flex items-center justify-center whitespace-nowrap gap-2.5 px-6 sm:px-9 h-14 sm:h-15 rounded-full bg-gold text-navy text-[11px] sm:text-[13px] tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Book Free Consultation" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "transition-transform group-hover:translate-x-1",
+								children: "→"
+							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 							href: "https://wa.me/910000000000",
 							className: "inline-flex items-center gap-3 px-9 py-4 rounded-full border border-white/40 text-white text-[13px] tracking-[0.2em] uppercase hover:bg-white hover:text-forest transition-all",
