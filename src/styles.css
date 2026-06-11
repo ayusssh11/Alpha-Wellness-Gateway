@@ -52,15 +52,15 @@
 :root {
   --radius: 14px;
 
-  /* Brand tokens */
-  --forest: oklch(0.38 0.06 158);          /* #0B3B2E approx */
-  --forest-deep: oklch(0.27 0.05 158);
-  --navy: oklch(0.18 0.03 250);            /* #081320 */
-  --gold: oklch(0.78 0.13 85);             /* #D4AF37 */
-  --gold-soft: oklch(0.86 0.09 88);
-  --sand: oklch(0.97 0.012 80);            /* #FAF7F2 */
-  --bone: oklch(0.94 0.014 80);
-  --ink: oklch(0.18 0 0);                  /* #111 */
+  /* Brand tokens — Warm Brown & Gold palette */
+  --forest: #8C715D;                        /* primaryButton */
+  --forest-deep: #4A332D;                   /* backgroundDark */
+  --navy: #4A332D;                          /* backgroundDark */
+  --gold: #E2C07D;                          /* accentGold */
+  --gold-soft: #EDD9A3;                     /* lighter accentGold */
+  --sand: #FAF8F5;                          /* backgroundLight */
+  --bone: #F0EDE8;                          /* slightly darker backgroundLight */
+  --ink: #2C2C2C;                           /* textDark */
 
   /* Shadcn semantic mapping */
   --background: var(--sand);
@@ -74,13 +74,13 @@
   --secondary: var(--bone);
   --secondary-foreground: var(--forest-deep);
   --muted: var(--bone);
-  --muted-foreground: oklch(0.45 0.01 80);
+  --muted-foreground: #7A6E63;
   --accent: var(--gold);
   --accent-foreground: var(--navy);
   --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: var(--sand);
-  --border: oklch(0.88 0.012 80);
-  --input: oklch(0.88 0.012 80);
+  --border: #E8E3DC;
+  --input: #E8E3DC;
   --ring: var(--gold);
 }
 

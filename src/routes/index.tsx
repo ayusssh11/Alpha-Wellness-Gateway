@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import heroImg from "@/assets/images/hero-section-1536x1024.jpg.jpeg";
+import heroVideo from "@/assets/Alpha without logo but old.webm";
+import logoDark from "@/assets/dark_logo.png";
+import logoLight from "@/assets/images/white-logo-768x573.png";
 import problemImg from "@/assets/images/DSC05737-scaled.jpg.jpeg";
-import progDiabetes from "@/assets/program-diabetes.jpg";
-import progObesity from "@/assets/program-obesity.jpg";
+import progDiabetes from "@/assets/images/sanctuary-villa.webp";
+import progObesity from "@/assets/images/sanctuary-yoga-1229x1536.jpg.jpeg";
 import progThyroid from "@/assets/program-thyroid.jpg";
 import doctorImg from "@/assets/doctor.jpg";
 import gallery1 from "@/assets/images/DSC05710-scaled.jpg.jpeg";
@@ -14,6 +17,14 @@ import finalCta from "@/assets/images/DSC05925-scaled.jpg.jpeg";
 import galleryPath from "@/assets/images/DSC05563-scaled.jpg.jpeg";
 import galleryVeranda from "@/assets/images/DSC05639-scaled.jpg.jpeg";
 import galleryLobbyNight from "@/assets/images/DSC05870-scaled.jpg.jpeg";
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "wistia-player": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { "media-id"?: string; aspect?: string; class?: string }, HTMLElement>;
+    }
+  }
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -83,6 +94,57 @@ function Reveal({
   );
 }
 
+/* ----------------------------- mandala watermark ----------------------------- */
+
+function MandalaBg() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+      <svg
+        className="w-[120%] h-[120%] sm:w-[90%] sm:h-[90%] max-w-[460px] max-h-[460px] opacity-[0.18] text-gold"
+        style={{ animation: "spin 180s linear infinite" }}
+        viewBox="0 0 200 200"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        aria-hidden="true"
+      >
+        {/* Concentric Circles */}
+        <circle cx="100" cy="100" r="52" />
+        <circle cx="100" cy="100" r="30" />
+        <circle cx="100" cy="100" r="15" />
+        <circle cx="100" cy="100" r="6" />
+
+        {/* Interlocking Yantra Triangles */}
+        <polygon points="100,45 148,128 52,128" />
+        <polygon points="100,155 52,72 148,72" />
+
+        {/* Inner secondary star lines */}
+        <polygon points="100,60 135,120 65,120" style={{ opacity: 0.7 }} />
+        <polygon points="100,140 65,80 135,80" style={{ opacity: 0.7 }} />
+
+        {/* Outer Petals (Layer 1 - 12 petals) */}
+        {Array.from({ length: 12 }).map((_, i) => (
+          <path
+            key={`p1-${i}`}
+            d="M 100 52 C 82 36, 92 10, 100 10 C 108 10, 118 36, 100 52"
+            transform={`rotate(${i * 30} 100 100)`}
+          />
+        ))}
+
+        {/* Outer Petals (Layer 2 - 12 petals, rotated by 15 deg) */}
+        {Array.from({ length: 12 }).map((_, i) => (
+          <path
+            key={`p2-${i}`}
+            d="M 100 52 C 85 40, 92 20, 100 20 C 108 20, 115 40, 100 52"
+            transform={`rotate(${i * 30 + 15} 100 100)`}
+            style={{ opacity: 0.8 }}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 /* ----------------------------- page ----------------------------- */
 
 function AlphaLanding() {
@@ -106,6 +168,7 @@ function AlphaLanding() {
       <Method />
       <Programs onOpenConsult={openForm} />
       <Results />
+      <DoctorInsights />
       <Experience />
       <Experts />
       <FinalCta onOpenConsult={openForm} />
@@ -122,36 +185,25 @@ function AlphaLanding() {
 function NavBar({ scrolled, onOpenConsult }: { scrolled: boolean; onOpenConsult: () => void }) {
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
           ? "bg-[color:var(--sand)]/85 backdrop-blur-xl border-b border-[color:var(--border)]"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-20 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-3">
-          <span
-            className={`font-display text-xl tracking-tight ${
-              scrolled ? "text-forest" : "text-white"
-            }`}
-          >
-            Alpha
-          </span>
-          <span
-            className={`eyebrow hidden sm:inline-block ${
-              scrolled ? "text-[color:var(--muted-foreground)]" : "text-white/70"
-            }`}
-          >
-            Wellness Resort
-          </span>
+        <a href="#top" className="flex items-center">
+          <img
+            src={logoDark}
+            alt="Alpha Wellness Resort Logo"
+            className="h-10 sm:h-12 w-auto object-contain transition-all duration-300"
+          />
         </a>
         <button
           onClick={onOpenConsult}
-          className={`inline-flex items-center gap-2 px-5 h-11 rounded-full text-[13px] tracking-wider uppercase transition-all cursor-pointer ${
-            scrolled
+          className={`inline-flex items-center gap-2 px-5 h-11 rounded-full text-[13px] tracking-wider uppercase transition-all cursor-pointer ${scrolled
               ? "bg-forest text-sand hover:bg-[color:var(--forest-deep)]"
               : "bg-white/10 text-white border border-white/30 hover:bg-white hover:text-forest"
-          }`}
+            }`}
         >
           Book Now
         </button>
@@ -166,13 +218,20 @@ function Hero({ onOpenConsult }: { onOpenConsult: () => void }) {
   return (
     <section id="top" className="relative min-h-[75vh] sm:min-h-screen w-full overflow-hidden bg-navy">
       <div className="absolute inset-0">
-        <img
-          src={heroImg}
-          alt="Wellness consultation in a tropical pavilion at golden hour"
-          className="w-full h-full object-cover kenburns"
-          width={1920}
-          height={1080}
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src={heroVideo} type="video/webm" />
+          <img
+            src={heroImg}
+            alt="Wellness consultation in a tropical pavilion at golden hour"
+            className="w-full h-full object-cover"
+          />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
       </div>
@@ -405,18 +464,6 @@ function Problem() {
               decode it, and restore it.
             </p>
           </Reveal>
-          <Reveal delay={300} className="mt-10">
-            <div className="overflow-hidden rounded-2xl">
-              <img
-                src={problemImg}
-                alt="The serene main pavilion at Alpha Wellness Resort"
-                className="w-full h-[280px] sm:h-[420px] object-cover hover:scale-105 transition-transform duration-[1.4s]"
-                loading="lazy"
-                width={1080}
-                height={1800}
-              />
-            </div>
-          </Reveal>
         </div>
 
         <div className="lg:col-span-7 lg:pl-8">
@@ -441,6 +488,10 @@ function Problem() {
 /* ----------------------------- method ----------------------------- */
 
 function Method() {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const targetProgress = useRef(0);
+
   const steps = [
     { n: "I", t: "Advanced Diagnostics", d: "World-class lab panels, gut microbiome, hormone & metabolic mapping." },
     { n: "II", t: "Root-Cause Discovery", d: "Your data interpreted by functional medicine experts to find the source." },
@@ -448,48 +499,212 @@ function Method() {
     { n: "IV", t: "Immersive Healing", d: "Stay in our sanctuary as your body recalibrates under expert care." },
     { n: "V", t: "Lifetime Recovery", d: "Long-term coaching ensures the results stay with you for years." },
   ];
-  return (
-    <section id="method" className="bg-navy text-white py-16 lg:py-24 overflow-hidden grain">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <div className="grid lg:grid-cols-12 gap-12 mb-12">
-          <div className="lg:col-span-5">
-            <Reveal>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="gold-rule" />
-                <span className="eyebrow text-gold">The Alpha Method</span>
-              </div>
-              <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl leading-[0.98]">
-                A protocol
-                <br />
-                designed for
-                <br />
-                <em className="italic text-gold">lasting recovery.</em>
-              </h2>
-            </Reveal>
-          </div>
-          <div className="lg:col-span-6 lg:col-start-7 flex items-end">
-            <Reveal delay={200}>
-              <p className="text-base sm:text-lg text-white/70 font-light leading-relaxed">
-                Five precisely choreographed stages — each one led by specialists
-                who treat your biology as a single, intelligent system rather
-                than a collection of symptoms.
-              </p>
-            </Reveal>
-          </div>
-        </div>
 
-        <div className="relative">
-          <div className="hidden lg:block absolute left-0 right-0 top-[78px] h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 lg:gap-6">
-            {steps.map((s, i) => (
-              <Reveal key={s.n} delay={i * 120} className="relative">
-                <div className="relative flex items-center justify-center w-20 h-20 rounded-full border border-gold/40 mb-8 bg-navy">
-                  <span className="font-display text-2xl text-gold">{s.n}</span>
+  // Track scroll position and update target
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = containerRef.current;
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const isDesktop = window.innerWidth >= 1024;
+
+      let progress = 0;
+
+      if (isDesktop) {
+        // Pinning progress: top of container is sticky
+        const totalScrollableDistance = rect.height - viewportHeight;
+        if (totalScrollableDistance <= 0) {
+          progress = 0;
+        } else {
+          // rect.top goes from 0 (when container hits the top) to -totalScrollableDistance (when it ends)
+          const rawProgress = -rect.top / totalScrollableDistance;
+          const clampedRaw = Math.max(0, Math.min(1, rawProgress));
+
+          // Map range [0.15, 0.85] to [0, 1] for visual breathing room
+          if (clampedRaw < 0.15) {
+            progress = 0;
+          } else if (clampedRaw > 0.85) {
+            progress = 1;
+          } else {
+            progress = (clampedRaw - 0.15) / 0.70;
+          }
+        }
+      } else {
+        // Mobile progress: standard natural scroll progress
+        const start = viewportHeight * 0.8;
+        const end = viewportHeight * 0.2 - rect.height;
+        progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+      }
+
+      targetProgress.current = progress;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  // Smooth easing loop (LERP)
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const updateProgress = () => {
+      setScrollProgress((prev) => {
+        const diff = targetProgress.current - prev;
+        if (Math.abs(diff) < 0.0001) {
+          return targetProgress.current;
+        }
+        // Smooth linear interpolation (lerp) with 0.09 easing factor for natural inertia
+        return prev + diff * 0.09;
+      });
+      animationFrameId = requestAnimationFrame(updateProgress);
+    };
+
+    animationFrameId = requestAnimationFrame(updateProgress);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  const getStepProgress = (i: number, progress: number) => {
+    if (i === 0) return 1;
+    const prevThreshold = (i - 1) / 4;
+    const threshold = i / 4;
+    if (progress >= threshold) return 1;
+    if (progress <= prevThreshold) return 0;
+    return (progress - prevThreshold) * 4;
+  };
+
+  const activeIndex = Math.max(0, Math.min(4, Math.round(scrollProgress * 4)));
+
+  return (
+    <section ref={containerRef} id="method" className="relative lg:h-[230vh] w-full bg-navy text-white overflow-visible">
+      {/* Sticky Content Wrapper */}
+      <div className="w-full relative lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-center overflow-hidden py-16 lg:py-0 grain">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 w-full">
+          <div className="grid lg:grid-cols-12 gap-12 mb-12">
+            <div className="lg:col-span-5">
+              <Reveal>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="gold-rule" />
+                  <span className="eyebrow text-gold">The Alpha Method</span>
                 </div>
-                <h3 className="font-display text-2xl text-white mb-3">{s.t}</h3>
-                <p className="text-sm text-white/60 leading-relaxed">{s.d}</p>
+                <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl leading-[0.98]">
+                  A protocol
+                  <br />
+                  designed for
+                  <br />
+                  <em className="italic text-gold">lasting recovery.</em>
+                </h2>
               </Reveal>
-            ))}
+            </div>
+            <div className="lg:col-span-6 lg:col-start-7 flex items-end">
+              <Reveal delay={200}>
+                <p className="text-base sm:text-lg text-white/70 font-light leading-relaxed">
+                  Five precisely choreographed stages — each one led by specialists
+                  who treat your biology as a single, intelligent system rather
+                  than a collection of symptoms.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+
+          <div className="relative mt-8 sm:mt-16">
+            {/* Progress bar line connecting steps (Desktop only) */}
+            <div className="hidden lg:block absolute left-[10%] right-[10%] top-[40px] h-[2px] bg-white/10 z-0">
+              <div
+                className="relative h-full bg-gradient-to-r from-gold via-gold/80 to-gold shadow-[0_0_12px_rgba(226,192,125,0.8)]"
+                style={{ width: `${scrollProgress * 100}%` }}
+              >
+                {/* Glowing animated tip indicator */}
+                {scrollProgress > 0.01 && (
+                  <>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-gold shadow-[0_0_20px_rgba(226,192,125,1)] animate-ping" />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(226,192,125,1)]" />
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Vertical progress bar line (Mobile/Tablet only) */}
+            <div className="lg:hidden absolute left-[40px] top-[40px] bottom-[40px] w-[2px] bg-white/10 z-0">
+              <div
+                className="relative w-full bg-gradient-to-b from-gold via-gold/80 to-gold shadow-[0_0_12px_rgba(226,192,125,0.8)]"
+                style={{ height: `${scrollProgress * 100}%` }}
+              >
+                {/* Glowing animated tip indicator */}
+                {scrollProgress > 0.01 && (
+                  <>
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gold shadow-[0_0_20px_rgba(226,192,125,1)] animate-ping" />
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(226,192,125,1)]" />
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-6 relative z-10">
+              {steps.map((s, i) => {
+                const t = getStepProgress(i, scrollProgress);
+                const isCompleted = t >= 1.0;
+                const isCurrent = i === activeIndex;
+                const opacityClass = isCurrent ? "opacity-100" : isCompleted ? "opacity-85" : "opacity-35";
+
+                return (
+                  <div
+                    key={s.n}
+                    className={`relative flex flex-row lg:flex-col items-start lg:items-center lg:text-center gap-6 lg:gap-0 cursor-pointer transition-all duration-500 group ${opacityClass}`}
+                  >
+                    {/* Circle Container */}
+                    <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
+                      {/* SVG Progress Border */}
+                      <svg className="absolute inset-0 w-full h-full z-0" viewBox="0 0 80 80">
+                        <circle cx="40" cy="40" r="36" className="stroke-white/10 fill-none" strokeWidth="2" />
+                        <circle
+                          cx="40"
+                          cy="40"
+                          r="36"
+                          className="stroke-gold fill-none"
+                          strokeWidth="3"
+                          strokeDasharray="226.2"
+                          strokeDashoffset={226.2 * (1 - t)}
+                          strokeLinecap="round"
+                          style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}
+                        />
+                      </svg>
+
+                      {/* Inner Circle */}
+                      <div
+                        className={`relative w-[64px] h-[64px] rounded-full flex items-center justify-center transition-all duration-300 z-10 ${isCurrent
+                            ? isCompleted
+                              ? "bg-gold text-navy border-gold shadow-[0_0_25px_rgba(226,192,125,0.8)] scale-110 z-20"
+                              : "bg-navy text-gold border border-gold/60 shadow-[0_0_15px_rgba(226,192,125,0.3)] scale-110 z-20"
+                            : isCompleted
+                              ? "bg-gold text-navy border border-gold shadow-[0_0_15px_rgba(226,192,125,0.4)] scale-100 z-10"
+                              : "bg-navy text-white/40 border border-white/10 scale-95 z-10"
+                          }`}
+                      >
+                        <span className="font-display text-xl font-light">{s.n}</span>
+                      </div>
+                    </div>
+
+                    {/* Text Container */}
+                    <div className="pt-2 lg:pt-0 lg:mt-8">
+                      <h3 className={`font-display text-2xl mb-3 transition-colors duration-300 ${isCurrent ? "text-gold" : "text-white"
+                        }`}>
+                        {s.t}
+                      </h3>
+                      <p className={`text-sm leading-relaxed transition-colors duration-300 ${isCurrent ? "text-white" : "text-white/60"
+                        }`}>
+                        {s.d}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -613,8 +828,9 @@ function ProgramRow({
             />
           </div>
         </Reveal>
-        <div className={`lg:col-span-5 ${reverse ? "lg:order-1 lg:pr-10" : "lg:pl-10"}`}>
-          <Reveal>
+        <div className={`relative lg:col-span-5 ${reverse ? "lg:order-1 lg:pr-10" : "lg:pl-10"}`}>
+          <MandalaBg />
+          <Reveal className="relative z-10">
             <div className="flex items-center gap-3 mb-5">
               <span className="eyebrow text-forest/60">{tag}</span>
               <span className="w-12 h-px bg-gold" />
@@ -723,6 +939,70 @@ function Results() {
                   <div className="text-xs text-white/55 mt-1">{s.city}</div>
                 </div>
               </article>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ----------------------------- doctor insights ----------------------------- */
+
+function WistiaVideo({ mediaId }: { mediaId: string }) {
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://fast.wistia.com/player.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://fast.wistia.com/player.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    if (!document.querySelector(`script[src="https://fast.wistia.com/embed/${mediaId}.js"]`)) {
+      const script = document.createElement("script");
+      script.src = `https://fast.wistia.com/embed/${mediaId}.js`;
+      script.async = true;
+      script.type = "module";
+      document.body.appendChild(script);
+    }
+  }, [mediaId]);
+
+  return (
+    <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:scale-[1.02] bg-black/5 ring-1 ring-black/5">
+      <style dangerouslySetInnerHTML={{ __html: `
+        wistia-player[media-id='${mediaId}']:not(:defined) {
+          background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/${mediaId}/swatch');
+          display: block;
+          filter: blur(5px);
+          padding-top: 177.78%;
+        }
+      `}} />
+      <wistia-player media-id={mediaId} aspect="0.5625"></wistia-player>
+    </div>
+  );
+}
+
+function DoctorInsights() {
+  const mediaIds = ["p9r5oj1rrp", "l103j0xqiv", "egsqur40gr", "lekt68oa2p"];
+  return (
+    <section className="bg-sand text-ink py-16 lg:py-24 border-t border-ink/5">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <Reveal>
+          <div className="flex items-center justify-center gap-3 mb-6 flex-wrap">
+            <span className="gold-rule w-8 md:w-12" />
+            <span className="eyebrow text-forest whitespace-nowrap">Expert Guidance</span>
+            <span className="gold-rule w-8 md:w-12" />
+          </div>
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-[0.98] text-center max-w-2xl mx-auto">
+            Insights from
+            <br />
+            <em className="italic">our doctors.</em>
+          </h2>
+        </Reveal>
+
+        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          {mediaIds.map((id, index) => (
+            <Reveal key={`${id}-${index}`} delay={index * 150}>
+              <WistiaVideo mediaId={id} />
             </Reveal>
           ))}
         </div>
@@ -960,7 +1240,11 @@ function Footer() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="grid lg:grid-cols-12 gap-12">
           <div className="lg:col-span-5">
-            <div className="font-display text-3xl">Alpha Wellness Resort</div>
+            <img
+              src={logoLight}
+              alt="Alpha Wellness Resort Logo"
+              className="h-14 sm:h-16 w-auto object-contain mb-4"
+            />
             <p className="text-white/60 mt-5 max-w-md font-light leading-relaxed">
               A private sanctuary where functional medicine, ayurveda and
               advanced diagnostics converge to reverse chronic disease — naturally.
@@ -1018,9 +1302,8 @@ function StickyCta({ onOpenConsult }: { onOpenConsult: () => void }) {
     <button
       onClick={onOpenConsult}
       aria-label="Book free consultation"
-      className={`fixed bottom-6 left-6 z-40 hidden md:inline-flex items-center gap-3 px-6 h-13 py-4 rounded-full bg-forest text-sand text-[12px] tracking-[0.18em] uppercase shadow-2xl transition-all duration-500 cursor-pointer ${
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
-      }`}
+      className={`fixed bottom-6 left-6 z-40 hidden md:inline-flex items-center gap-3 px-6 h-13 py-4 rounded-full bg-forest text-sand text-[12px] tracking-[0.18em] uppercase shadow-2xl transition-all duration-500 cursor-pointer ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
+        }`}
     >
       <span className="w-2 h-2 rounded-full bg-gold shimmer" />
       Book Free Consultation
