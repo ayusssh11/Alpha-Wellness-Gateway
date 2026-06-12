@@ -6,7 +6,7 @@ import { n as ArrowLeft, t as ArrowRight } from "../_libs/lucide-react.mjs";
 import { n as clsx, t as cva } from "../_libs/class-variance-authority+clsx.mjs";
 import { t as twMerge } from "../_libs/tailwind-merge.mjs";
 import { t as Slot } from "../_libs/radix-ui__react-slot.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DZKAOIo1.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DBK4Q5IN.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var dark_logo_default = "/assets/dark_logo-Bec-gvIB.png";
@@ -308,19 +308,25 @@ function NavBar({ scrolled, onOpenConsult }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
 		className: "fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[color:var(--sand)]/85 backdrop-blur-xl border-b border-[color:var(--border)]",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "mx-auto max-w-[1400px] px-6 lg:px-12 h-20 flex items-center justify-between",
+			className: "mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-12 h-16 sm:h-20 flex items-center justify-between gap-4",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
 				href: "#top",
-				className: "flex items-center",
+				className: "flex items-center shrink-0",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 					src: dark_logo_default,
 					alt: "The Sanctuary Logo",
-					className: "h-10 sm:h-12 w-auto object-contain transition-all duration-300"
+					className: "h-7 sm:h-10 md:h-12 w-auto object-contain transition-all duration-300"
 				})
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 				onClick: onOpenConsult,
-				className: "inline-flex items-center gap-2 px-5 h-11 rounded-full text-[13px] tracking-wider uppercase transition-all cursor-pointer bg-forest text-sand hover:bg-[color:var(--forest-deep)]",
-				children: "Reserve your stay"
+				className: "inline-flex items-center justify-center gap-2 px-3.5 sm:px-5 h-9 sm:h-11 rounded-full text-[10px] sm:text-[13px] tracking-wider uppercase transition-all cursor-pointer bg-forest text-sand hover:bg-[color:var(--forest-deep)] whitespace-nowrap shrink-0 font-medium",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "hidden sm:inline",
+					children: "Reserve your stay"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "inline sm:hidden",
+					children: "Reserve"
+				})]
 			})]
 		})
 	});

@@ -238,19 +238,20 @@ function NavBar({ scrolled, onOpenConsult }: { scrolled: boolean; onOpenConsult:
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[color:var(--sand)]/85 backdrop-blur-xl border-b border-[color:var(--border)]"
     >
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-20 flex items-center justify-between">
-        <a href="#top" className="flex items-center">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-12 h-16 sm:h-20 flex items-center justify-between gap-4">
+        <a href="#top" className="flex items-center shrink-0">
           <img
             src={logoDark}
             alt="The Sanctuary Logo"
-            className="h-10 sm:h-12 w-auto object-contain transition-all duration-300"
+            className="h-7 sm:h-10 md:h-12 w-auto object-contain transition-all duration-300"
           />
         </a>
         <button
           onClick={onOpenConsult}
-          className="inline-flex items-center gap-2 px-5 h-11 rounded-full text-[13px] tracking-wider uppercase transition-all cursor-pointer bg-forest text-sand hover:bg-[color:var(--forest-deep)]"
+          className="inline-flex items-center justify-center gap-2 px-3.5 sm:px-5 h-9 sm:h-11 rounded-full text-[10px] sm:text-[13px] tracking-wider uppercase transition-all cursor-pointer bg-forest text-sand hover:bg-[color:var(--forest-deep)] whitespace-nowrap shrink-0 font-medium"
         >
-          Reserve your stay
+          <span className="hidden sm:inline">Reserve your stay</span>
+          <span className="inline sm:hidden">Reserve your stay</span>
         </button>
       </div>
     </header>
