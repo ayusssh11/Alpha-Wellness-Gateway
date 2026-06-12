@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useEffect, useRef, useState } from "react";
 
 import heroImg from "@/assets/images/hero-section-1536x1024.jpg.jpeg";
-import heroVideo from "@/assets/hero-loop.webm";
 import logoDark from "@/assets/dark_logo.png";
 import logoLight from "@/assets/images/white-logo-768x573.png";
 import problemImg from "@/assets/images/DSC05737-scaled.jpg.jpeg";
@@ -24,7 +23,25 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       "wistia-player": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & { "media-id"?: string; aspect?: string; class?: string; className?: string },
+        React.HTMLAttributes<HTMLElement> & {
+          "media-id"?: string;
+          aspect?: string;
+          class?: string;
+          className?: string;
+          autoplay?: string | boolean;
+          muted?: string | boolean;
+          "end-video-behavior"?: string;
+          playbar?: string | boolean;
+          "play-bar-control"?: string | boolean;
+          "big-play-button"?: string | boolean;
+          "small-play-button"?: string | boolean;
+          "volume-control"?: string | boolean;
+          "settings-control"?: string | boolean;
+          "fullscreen-button"?: string | boolean;
+          "controls-visible-on-load"?: string | boolean;
+          "fit-strategy"?: string;
+          [key: string]: any;
+        },
         HTMLElement
       >;
     }
@@ -33,7 +50,25 @@ declare global {
     namespace JSX {
       interface IntrinsicElements {
         "wistia-player": React.DetailedHTMLProps<
-          React.HTMLAttributes<HTMLElement> & { "media-id"?: string; aspect?: string; class?: string; className?: string },
+          React.HTMLAttributes<HTMLElement> & {
+            "media-id"?: string;
+            aspect?: string;
+            class?: string;
+            className?: string;
+            autoplay?: string | boolean;
+            muted?: string | boolean;
+            "end-video-behavior"?: string;
+            playbar?: string | boolean;
+            "play-bar-control"?: string | boolean;
+            "big-play-button"?: string | boolean;
+            "small-play-button"?: string | boolean;
+            "volume-control"?: string | boolean;
+            "settings-control"?: string | boolean;
+            "fullscreen-button"?: string | boolean;
+            "controls-visible-on-load"?: string | boolean;
+            "fit-strategy"?: string;
+            [key: string]: any;
+          },
           HTMLElement
         >;
       }
@@ -44,16 +79,16 @@ declare global {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Alpha Wellness Resort — Reverse Chronic Disease Naturally" },
+      { title: "The Sanctuary — Luxury Wellness Resort in Mysore | Alpha" },
       {
         name: "description",
         content:
-          "Functional Medicine + Ayurveda + Advanced Diagnostics. A luxury sanctuary helping you heal the root cause — not just symptoms. Book a free consultation.",
+          "A serene luxury healing sanctuary in Mysuru, surrounded by nature. Wellness rooms, organic dining, Ayurveda spa, meditation gardens.",
       },
-      { property: "og:title", content: "Alpha Wellness Resort" },
+      { property: "og:title", content: "The Sanctuary — Luxury Wellness Resort in Mysore" },
       {
         property: "og:description",
-        content: "Reverse chronic disease naturally at India's most refined wellness sanctuary.",
+        content: "A serene luxury healing sanctuary in Mysuru, surrounded by nature.",
       },
       { property: "og:image", content: heroImg },
     ],
@@ -182,10 +217,11 @@ function AlphaLanding() {
       <Problem />
       <Method />
       <Programs onOpenConsult={openForm} />
-      <Results />
-      <DoctorInsights />
       <Experience />
-      <Experts />
+      <Results />
+      <FAQ />
+      <Serenity onOpenConsult={openForm} />
+      <DoctorInsights />
       <FinalCta onOpenConsult={openForm} />
       <Footer />
       <StickyCta onOpenConsult={openForm} />
@@ -200,27 +236,21 @@ function AlphaLanding() {
 function NavBar({ scrolled, onOpenConsult }: { scrolled: boolean; onOpenConsult: () => void }) {
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-          ? "bg-[color:var(--sand)]/85 backdrop-blur-xl border-b border-[color:var(--border)]"
-          : "bg-transparent"
-        }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[color:var(--sand)]/85 backdrop-blur-xl border-b border-[color:var(--border)]"
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-20 flex items-center justify-between">
         <a href="#top" className="flex items-center">
           <img
             src={logoDark}
-            alt="Alpha Wellness Resort Logo"
+            alt="The Sanctuary Logo"
             className="h-10 sm:h-12 w-auto object-contain transition-all duration-300"
           />
         </a>
         <button
           onClick={onOpenConsult}
-          className={`inline-flex items-center gap-2 px-5 h-11 rounded-full text-[13px] tracking-wider uppercase transition-all cursor-pointer ${scrolled
-              ? "bg-forest text-sand hover:bg-[color:var(--forest-deep)]"
-              : "bg-white/10 text-white border border-white/30 hover:bg-white hover:text-forest"
-            }`}
+          className="inline-flex items-center gap-2 px-5 h-11 rounded-full text-[13px] tracking-wider uppercase transition-all cursor-pointer bg-forest text-sand hover:bg-[color:var(--forest-deep)]"
         >
-          Book Now
+          Reserve your stay
         </button>
       </div>
     </header>
@@ -230,23 +260,51 @@ function NavBar({ scrolled, onOpenConsult }: { scrolled: boolean; onOpenConsult:
 /* ----------------------------- hero ----------------------------- */
 
 function Hero({ onOpenConsult }: { onOpenConsult: () => void }) {
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://fast.wistia.com/player.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://fast.wistia.com/player.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    if (!document.querySelector('script[src="https://fast.wistia.com/embed/7aezh1ji1f.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://fast.wistia.com/embed/7aezh1ji1f.js";
+      script.async = true;
+      script.type = "module";
+      document.body.appendChild(script);
+    }
+  }, []);
+
   return (
     <section id="top" className="relative min-h-[75vh] sm:min-h-screen w-full overflow-hidden bg-navy">
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src={heroVideo} type="video/webm" />
-          <img
-            src={heroImg}
-            alt="Wellness consultation in a tropical pavilion at golden hour"
-            className="w-full h-full object-cover"
-          />
-        </video>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+          wistia-player[media-id='7aezh1ji1f']:not(:defined) {
+            background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/7aezh1ji1f/swatch');
+            display: block;
+            filter: blur(5px);
+            padding-top: 56.25%;
+          }
+        `}} />
+        <wistia-player
+          media-id="7aezh1ji1f"
+          aspect="1.7777777777777777"
+          autoplay="true"
+          muted="true"
+          end-video-behavior="loop"
+          playbar="false"
+          play-bar-control="false"
+          big-play-button="false"
+          small-play-button="false"
+          volume-control="false"
+          settings-control="false"
+          fullscreen-button="false"
+          controls-visible-on-load="false"
+          fit-strategy="cover"
+          className="w-full h-full pointer-events-none"
+        ></wistia-player>
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
       </div>
@@ -256,51 +314,72 @@ function Hero({ onOpenConsult }: { onOpenConsult: () => void }) {
           <Reveal>
             <div className="flex items-center gap-4 mb-8">
               <span className="gold-rule" />
-              <span className="eyebrow text-gold">A Sanctuary For Root-Cause Healing</span>
+              <span className="eyebrow text-gold">A quiet place to slow down</span>
             </div>
           </Reveal>
           <Reveal delay={120}>
             <h1 className="font-display text-4xl sm:text-6xl lg:text-[104px] leading-[1.02] text-white">
-              Reverse Chronic
+              Wellness Retreat
               <br />
-              Disease <em className="italic font-normal text-gold">Naturally.</em>
+              near <em className="italic font-normal text-gold">Bengaluru</em>
             </h1>
           </Reveal>
           <Reveal delay={260}>
-            <p className="mt-4 sm:mt-8 max-w-xl text-sm sm:text-[17px] leading-relaxed text-white/80 font-light">
-              Functional Medicine, Ayurveda and Advanced Diagnostics — converging
-              in one private sanctuary to help you heal the root cause, not just
-              the symptoms.
+            <p className="mt-4 sm:mt-8 max-w-xl text-sm sm:text-[17px] leading-relaxed text-white/85 font-light">
+              Luxury Cottages, a big swimming pool, yoga every morning, and Ayurvedic Spa.
             </p>
           </Reveal>
           <Reveal delay={400}>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-10 flex flex-wrap gap-4 items-center">
               <button
                 onClick={onOpenConsult}
                 className="group inline-flex items-center justify-center whitespace-nowrap gap-2.5 px-5 sm:px-7 h-14 rounded-full bg-gold text-navy text-[11px] sm:text-[13px] tracking-[0.15em] sm:tracking-[0.18em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer"
               >
-                <span>Book Free Consultation</span>
+                <span>Reserve your stay</span>
                 <span className="transition-transform group-hover:translate-x-1">→</span>
               </button>
               <a
-                href="https://wa.me/910000000000"
+                href="https://wa.link/8vxvsu"
                 className="inline-flex items-center gap-3 px-7 h-14 rounded-full border border-white/40 text-white text-[13px] tracking-[0.18em] uppercase hover:bg-white hover:text-forest transition-all"
               >
-                Talk To A Specialist
+                WhatsApp Us
               </a>
+            </div>
+          </Reveal>
+
+          {/* Icon badges list from reference images */}
+          <Reveal delay={520}>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-white/95 text-xs sm:text-sm font-light tracking-wider uppercase">
+              <span className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                Luxury Cottages
+              </span>
+              <span className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-gold flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+                Fresh Food
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="text-gold flex-shrink-0 text-base">📍</span>
+                2 hrs from Bengaluru
+              </span>
             </div>
           </Reveal>
         </div>
       </div>
 
-      {/* Stat strip */}
+      {/* Stat strip updated for retreat */}
       <div className="relative z-10 border-t border-white/15 bg-black/30 backdrop-blur-sm">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center sm:place-items-start">
           {[
-            ["99%", "Satisfaction"],
-            ["20+", "Years Experience"],
-            ["28+", "Specialists"],
-            ["5,000+", "Patients Healed"],
+            ["40 Acres", "Pristine Forest"],
+            ["18", "Private Villas"],
+            ["2 Hours", "From Bengaluru"],
+            ["100%", "Organic Dining"],
           ].map(([n, l]) => (
             <div key={l} className="text-white text-center sm:text-left">
               <div className="font-display text-3xl lg:text-4xl text-gold">{n}</div>
@@ -420,14 +499,14 @@ function Field({ label, name, type }: { label: string; name: string; type: strin
 
 function Marquee() {
   const items = [
-    "Functional Medicine",
-    "Ayurveda",
-    "Naturopathy",
-    "Advanced Diagnostics",
-    "Clinical Nutrition",
-    "Yoga Therapy",
-    "Hydrotherapy",
-    "Mind-Body Healing",
+    "Luxury Cottages",
+    "Ayurvedic Spa",
+    "Swimming Pool",
+    "Organic Dining",
+    "Yoga Sessions",
+    "Nature Walks",
+    "Serenity & Silence",
+    "Circadian Sleep",
   ];
   const loop = [...items, ...items];
   return (
@@ -447,13 +526,13 @@ function Marquee() {
 /* ----------------------------- problem ----------------------------- */
 
 function Problem() {
-  const issues = [
-    { n: "01", t: "Diabetes", d: "Daily injections, rising HbA1c, no real recovery." },
-    { n: "02", t: "Thyroid", d: "Lifelong medication that never restores balance." },
-    { n: "03", t: "Obesity", d: "Stubborn weight, fluctuating energy, low confidence." },
-    { n: "04", t: "Fatigue", d: "Constant exhaustion no test can explain." },
-    { n: "05", t: "Gut Issues", d: "Bloating, IBS, food sensitivities silenced — never solved." },
-    { n: "06", t: "Stress & Burnout", d: "A nervous system stuck in permanent overdrive." },
+  const cards = [
+    { n: "01", t: "For Leisure Guests", d: "A luxury nature retreat designed to help you slow down and find peace.", isHighlight: true },
+    { n: "02", t: "For Wellness Seekers", d: "A transformational sanctuary offering deep rejuvenation and healing.", isHighlight: true },
+    { n: "03", t: "Swimming Pool", d: "A full-size outdoor pool surrounded by trees. Quiet, clean, and mostly to yourself." },
+    { n: "04", t: "Yoga Sessions", d: "Every morning, open-air, overlooking the trees. Gentle start for the day." },
+    { n: "05", t: "Fresh Food", d: "Farm-sourced, healthy food cooked fresh by our expert chefs." },
+    { n: "06", t: "Ayurvedic Therapies", d: "Relaxation massages, steam baths, and traditional Panchakarma." },
   ];
   return (
     <section className="bg-sand py-16 lg:py-24">
@@ -462,29 +541,25 @@ function Problem() {
           <Reveal>
             <div className="flex items-center gap-3 mb-6">
               <span className="gold-rule" />
-              <span className="eyebrow text-forest">The Modern Crisis</span>
+              <span className="eyebrow text-forest">ABOUT ALPHA</span>
             </div>
             <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl text-forest leading-[0.98]">
-              Tired of managing
+              A quiet place to
               <br />
-              symptoms instead of
-              <br />
-              <em className="italic">solving them?</em>
+              <em className="italic">slow down</em>
             </h2>
           </Reveal>
           <Reveal delay={150}>
             <p className="mt-4 sm:mt-8 text-base sm:text-lg leading-relaxed text-ink/70 font-light max-w-md">
-              Conventional medicine excels at acute care but rarely heals chronic
-              disease. At Alpha, we don't suppress your body — we listen to it,
-              decode it, and restore it.
+              Alpha is a wellness retreat surrounded by nature & silence. You wake up to birdsong, not alarms. Spend your mornings doing yoga by the pool, your afternoons at the Ayurvedic spa, and your evenings walking forest trails. Whether you're here for a weekend or a week — the goal is simple: leave feeling better than you arrived.
             </p>
           </Reveal>
         </div>
 
         <div className="lg:col-span-7 lg:pl-8">
           <div className="grid sm:grid-cols-2 gap-px bg-[color:var(--border)] rounded-2xl overflow-hidden border border-[color:var(--border)]">
-            {issues.map((it, i) => (
-              <Reveal key={it.t} delay={i * 80} className="bg-sand p-6 sm:p-8 group">
+            {cards.map((it, i) => (
+              <Reveal key={it.t} delay={i * 80} className={`p-6 sm:p-8 group transition-colors ${it.isHighlight ? 'bg-bone/40' : 'bg-sand'}`}>
                 <div className="flex items-start justify-between mb-6">
                   <span className="eyebrow text-forest/50">{it.n}</span>
                   <span className="w-8 h-px bg-gold mt-2 group-hover:w-16 transition-all duration-500" />
@@ -508,11 +583,11 @@ function Method() {
   const targetProgress = useRef(0);
 
   const steps = [
-    { n: "I", t: "Advanced Diagnostics", d: "World-class lab panels, gut microbiome, hormone & metabolic mapping." },
-    { n: "II", t: "Root-Cause Discovery", d: "Your data interpreted by functional medicine experts to find the source." },
-    { n: "III", t: "Personalized Protocol", d: "A bespoke plan blending modern medicine, ayurveda and lifestyle." },
-    { n: "IV", t: "Immersive Healing", d: "Stay in our sanctuary as your body recalibrates under expert care." },
-    { n: "V", t: "Lifetime Recovery", d: "Long-term coaching ensures the results stay with you for years." },
+    { n: "I", t: "Wellness Assessment", d: "Consultation with our doctors, diagnostic screening, and Ayurvedic constitution mapping." },
+    { n: "II", t: "Customized Protocol", d: "Personalized therapies, nutrition plan, and daily yoga sessions tailored to you." },
+    { n: "III", t: "Authentic Therapies", d: "Abhyanga, Shirodhara, and other traditional Ayurvedic treatments for deep rejuvenation." },
+    { n: "IV", t: "Circadian Reset", d: "Aligning your schedule with nature — forest walks, mindful meditation, and restful sleep." },
+    { n: "V", t: "Guided Integration", d: "Post-stay transition plans and coaching to sustain your vitality at home." },
   ];
 
   // Track scroll position and update target
@@ -605,7 +680,7 @@ function Method() {
               <Reveal>
                 <div className="flex items-center gap-3 mb-6">
                   <span className="gold-rule" />
-                  <span className="eyebrow text-gold">The Alpha Method</span>
+                  <span className="eyebrow text-gold">The Sanctuary Journey</span>
                 </div>
                 <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl leading-[0.98]">
                   A protocol
@@ -693,12 +768,12 @@ function Method() {
                       {/* Inner Circle */}
                       <div
                         className={`relative w-[64px] h-[64px] rounded-full flex items-center justify-center transition-all duration-300 z-10 ${isCurrent
-                            ? isCompleted
-                              ? "bg-gold text-navy border-gold shadow-[0_0_25px_rgba(226,192,125,0.8)] scale-110 z-20"
-                              : "bg-navy text-gold border border-gold/60 shadow-[0_0_15px_rgba(226,192,125,0.3)] scale-110 z-20"
-                            : isCompleted
-                              ? "bg-gold text-navy border border-gold shadow-[0_0_15px_rgba(226,192,125,0.4)] scale-100 z-10"
-                              : "bg-navy text-white/40 border border-white/10 scale-95 z-10"
+                          ? isCompleted
+                            ? "bg-gold text-navy border-gold shadow-[0_0_25px_rgba(226,192,125,0.8)] scale-110 z-20"
+                            : "bg-navy text-gold border border-gold/60 shadow-[0_0_15px_rgba(226,192,125,0.3)] scale-110 z-20"
+                          : isCompleted
+                            ? "bg-gold text-navy border border-gold shadow-[0_0_15px_rgba(226,192,125,0.4)] scale-100 z-10"
+                            : "bg-navy text-white/40 border border-white/10 scale-95 z-10"
                           }`}
                       >
                         <span className="font-display text-xl font-light">{s.n}</span>
@@ -735,31 +810,31 @@ function Programs({ onOpenConsult }: { onOpenConsult: () => void }) {
       tag: "Program 01",
       title: "Diabetes Reversal",
       body:
-        "A 14–28 day immersive protocol that addresses insulin resistance at the source — most guests see HbA1c drop by 1.5–3 points and reduce medication.",
+        "A 14–28 day immersive protocol at our Mysore sanctuary addressing insulin resistance through clinical nutrition, advanced diagnostics, and Ayurvedic therapies.",
       bullets: ["Continuous glucose tracking", "Personalised meal protocols", "Reduce or eliminate medication"],
       img: progDiabetes,
     },
     {
       tag: "Program 02",
-      title: "Obesity Reset",
+      title: "Metabolic & Weight Reset",
       body:
-        "Metabolic recalibration through clinical nutrition, hormone rebalancing and movement therapy — sustainable, never extreme.",
+        "Metabolic recalibration through personalized organic meals, yoga, and gentle detox in our serene nature setting.",
       bullets: ["8–18 kg fat loss typical", "Hormone & thyroid optimization", "Lifelong lifestyle blueprint"],
       img: progObesity,
     },
     {
       tag: "Program 03",
-      title: "Thyroid Harmony",
+      title: "Thyroid & Hormone Harmony",
       body:
-        "Restore thyroid function naturally through stress modulation, gut healing, and targeted micronutrient therapy.",
+        "Restore endocrine balance naturally through stress modulation, circadian alignment, and targeted therapies.",
       bullets: ["Hashimoto's & hypothyroid protocols", "Autoimmune modulation", "TSH, T3, T4 normalization"],
       img: progThyroid,
     },
     {
       tag: "Program 04",
-      title: "Gut Healing",
+      title: "Gut & Microbiome Healing",
       body:
-        "Rebuild the microbiome that governs your immunity, energy and mood. A foundational program every guest benefits from.",
+        "Rebuild the microbiome that governs your immunity and energy. A foundational program utilizing farm-to-table organic meals.",
       bullets: ["Microbiome diagnostics", "IBS, SIBO, bloating resolution", "Gut-brain axis restoration"],
       img: gallery1,
     },
@@ -767,15 +842,15 @@ function Programs({ onOpenConsult }: { onOpenConsult: () => void }) {
       tag: "Program 05",
       title: "Stress & Sleep Recovery",
       body:
-        "Calm a hyperactive nervous system through panchakarma, breathwork, and circadian recalibration. Sleep returns within days.",
+        "Calm a hyperactive nervous system through panchakarma, open-air meditation, and Kaveri riverfront walks.",
       bullets: ["HRV & cortisol mapping", "Deep sleep restoration", "Burnout reversal"],
       img: gallery3,
     },
     {
       tag: "Program 06",
-      title: "Detox & Longevity",
+      title: "Detox, Panchakarma & Longevity",
       body:
-        "Cellular renewal through panchakarma, fasting protocols and advanced biomarker tracking. For those who want to live long, and live well.",
+        "Cellular renewal through authentic Panchakarma, herbal steam, and advanced biomarkers in a peaceful forest pavilion.",
       bullets: ["Biological age testing", "Heavy metal & toxin elimination", "Mitochondrial rejuvenation"],
       img: gallery2,
     },
@@ -882,32 +957,32 @@ function ProgramRow({
 
 function Results() {
   const metrics = [
-    { v: "−2.8", u: "pts", l: "Average HbA1c reduction" },
-    { v: "12.4", u: "kg", l: "Average fat loss in 21 days" },
-    { v: "73%", u: "", l: "Reduced or stopped medication" },
-    { v: "9.4", u: "/10", l: "Energy & vitality score" },
+    { v: "40", u: "Acres", l: "Pristine natural forest" },
+    { v: "18", u: "Villas", l: "Private luxury villas & cottages" },
+    { v: "100%", u: "", l: "Organic farm-sourced dining" },
+    { v: "9.8", u: "/10", l: "Guest satisfaction score" },
   ];
   const stories = [
     {
-      name: "Rohan M.",
-      city: "Mumbai · Age 52",
-      tag: "Diabetes Reversal",
+      name: "Prokshitha Shivu",
+      city: "Bengaluru",
+      tag: "Absolute Delight",
       quote:
-        "I arrived on 90 units of insulin and four medications. Twenty-eight days later, I left on lifestyle alone. My HbA1c went from 9.8 to 6.1.",
+        "The place is best to relax, absolute best we even consulted doctor here and staff are very well mannered over all absolute delight.",
     },
     {
-      name: "Priya S.",
-      city: "Bangalore · Age 38",
-      tag: "Thyroid Harmony",
+      name: "Karthik Sundaram",
+      city: "Dubai",
+      tag: "Highly Recommended",
       quote:
-        "After a decade of medication, my thyroid normalised. Alpha didn't just treat my numbers — they gave me my energy and my mornings back.",
+        "It was great experience in the resort. The theme of the resort is very new to India and I highly recommend people who has does lot of white collar job to visit this place.",
     },
     {
-      name: "Anand R.",
-      city: "Dubai · Age 47",
-      tag: "Stress Recovery",
+      name: "Deepak Leo John",
+      city: "Bengaluru",
+      tag: "Beautiful Escape",
       quote:
-        "I came in exhausted and dependent on sleep medication. Within ten days, I was sleeping nine hours without a pill. The sanctuary did what years of clinics couldn't.",
+        "Beautiful place to destress and very near to Bangalore on the shores of Kaveri river. The staff are really good and hospitality is at its pinnacle. I would highly recommend 👍",
     },
   ];
   return (
@@ -916,12 +991,10 @@ function Results() {
         <Reveal>
           <div className="flex items-center gap-3 mb-6">
             <span className="gold-rule" />
-            <span className="eyebrow text-gold">Real Results</span>
+            <span className="eyebrow text-gold">Why Alpha</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl leading-[0.98] max-w-4xl">
-            Measured in lab reports.
-            <br />
-            <em className="italic text-gold">Felt for a lifetime.</em>
+            Guest Testimonials
           </h2>
         </Reveal>
 
@@ -946,11 +1019,11 @@ function Results() {
             <Reveal key={s.name} delay={i * 120}>
               <article className="h-full rounded-2xl border border-white/15 p-6 sm:p-8 lg:p-10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors">
                 <span className="eyebrow text-gold">{s.tag}</span>
-                <p className="mt-4 sm:mt-6 font-display text-lg sm:text-2xl leading-snug text-white/95">
+                <p className="mt-4 sm:mt-6 font-display text-lg sm:text-[20px] leading-relaxed text-white/95">
                   “{s.quote}”
                 </p>
                 <div className="mt-8 pt-6 border-t border-white/15">
-                  <div className="text-white">{s.name}</div>
+                  <div className="text-white font-medium">{s.name}</div>
                   <div className="text-xs text-white/55 mt-1">{s.city}</div>
                 </div>
               </article>
@@ -964,7 +1037,7 @@ function Results() {
 
 /* ----------------------------- doctor insights ----------------------------- */
 
-function WistiaVideo({ mediaId }: { mediaId: string }) {
+function WistiaVideo({ mediaId, aspect = "0.5625" }: { mediaId: string; aspect?: string }) {
   useEffect(() => {
     if (!document.querySelector('script[src="https://fast.wistia.com/player.js"]')) {
       const script = document.createElement("script");
@@ -981,56 +1054,68 @@ function WistiaVideo({ mediaId }: { mediaId: string }) {
     }
   }, [mediaId]);
 
+  const numericAspect = parseFloat(aspect);
+  const paddingTop = isNaN(numericAspect) ? "177.78%" : `${(100 / numericAspect).toFixed(2)}%`;
+
   return (
     <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl transition-transform duration-500 hover:scale-[1.02] bg-black/5 ring-1 ring-black/5">
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         wistia-player[media-id='${mediaId}']:not(:defined) {
           background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/${mediaId}/swatch');
           display: block;
           filter: blur(5px);
-          padding-top: 177.78%;
+          padding-top: ${paddingTop};
         }
       `}} />
-      <wistia-player media-id={mediaId} aspect="0.5625"></wistia-player>
+      <wistia-player media-id={mediaId} aspect={aspect}></wistia-player>
     </div>
   );
 }
 
 function DoctorInsights() {
-  const mediaIds = ["p9r5oj1rrp", "l103j0xqiv", "egsqur40gr", "lekt68oa2p"];
+  const videos = [
+    { id: "1diiad3niw", aspect: "0.5625" },
+    { id: "lr50km2fi3", aspect: "0.5625" }
+  ];
+
   return (
     <section className="bg-sand text-ink py-16 lg:py-24 border-t border-ink/5">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <Reveal>
           <div className="flex items-center justify-center gap-3 mb-6 flex-wrap">
             <span className="gold-rule w-8 md:w-12" />
-            <span className="eyebrow text-forest whitespace-nowrap">Expert Guidance</span>
+            <span className="eyebrow text-forest whitespace-nowrap">Wellness Insights</span>
             <span className="gold-rule w-8 md:w-12" />
           </div>
           <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-[0.98] text-center max-w-2xl mx-auto">
-            Insights from
+            Insights for your
             <br />
-            <em className="italic">our doctors.</em>
+            <em className="italic">wellness journey.</em>
           </h2>
         </Reveal>
 
+        {/* Mobile View: Carousel */}
         <div className="mt-14 block sm:hidden">
           <Carousel opts={{ align: "start", dragFree: true }} className="w-full overflow-visible">
             <CarouselContent className="-ml-4 max-w-[85vw]">
-              {mediaIds.map((id, index) => (
-                <CarouselItem key={`${id}-${index}`} className="pl-4 basis-full">
-                  <WistiaVideo mediaId={id} />
+              {videos.map((vid, index) => (
+                <CarouselItem key={`${vid.id}-${index}`} className="pl-4 basis-full">
+                  <WistiaVideo mediaId={vid.id} aspect={vid.aspect} />
                 </CarouselItem>
               ))}
             </CarouselContent>
           </Carousel>
         </div>
 
-        <div className="mt-14 hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {mediaIds.map((id, index) => (
-            <Reveal key={`${id}-${index}`} delay={index * 150}>
-              <WistiaVideo mediaId={id} />
-            </Reveal>
+        {/* Desktop View: Grid */}
+        <div className="mt-14 hidden sm:grid sm:grid-cols-2 gap-8 justify-items-center max-w-3xl mx-auto">
+          {videos.map((vid, index) => (
+            <div key={`${vid.id}-${index}`} className="max-w-sm w-full">
+              <Reveal delay={index * 150}>
+                <WistiaVideo mediaId={vid.id} aspect={vid.aspect} />
+              </Reveal>
+            </div>
           ))}
         </div>
       </div>
@@ -1038,48 +1123,85 @@ function DoctorInsights() {
   );
 }
 
-/* ----------------------------- experience ----------------------------- */
+/* ----------------------------- experience (luxury cottages) ----------------------------- */
 
 function Experience() {
+  const tabs = [
+    "LEISURE TRAVELERS",
+    "COUPLES & FAMILIES",
+    "CORPORATE RETREATS",
+    "WELLNESS SEEKERS",
+    "INTERNATIONAL GUESTS"
+  ];
   return (
     <section className="bg-sand py-16 lg:py-24">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <div className="grid lg:grid-cols-12 gap-12 items-end">
-          <Reveal className="lg:col-span-7">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="gold-rule" />
-              <span className="eyebrow text-forest">The Sanctuary</span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl text-forest leading-[0.98]">
-              Where healing
-              <br />
-              <em className="italic">feels like a retreat.</em>
-            </h2>
-          </Reveal>
-          <Reveal delay={200} className="lg:col-span-5">
-            <p className="text-base sm:text-lg text-ink/70 font-light leading-relaxed">
-              Private villas, ayurvedic pavilions, an organic kitchen and 40 acres
-              of healing forest. Designed by a team obsessed with both clinical
-              precision and quiet luxury.
-            </p>
-          </Reveal>
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-7">
+            <Reveal>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="gold-rule" />
+                <span className="eyebrow text-forest">The Sanctuary</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl text-forest leading-[0.98]">
+                Luxury Cottages
+              </h2>
+            </Reveal>
+            <Reveal delay={150}>
+              <p className="mt-6 text-base sm:text-lg text-ink/70 font-light leading-relaxed max-w-xl">
+                Each cottage sits quietly within the property — away from the main areas, surrounded by green. Studio & Deluxe cottage options available.
+              </p>
+            </Reveal>
+
+            {/* Bullets from reference images */}
+            <Reveal delay={250}>
+              <ul className="mt-6 space-y-2">
+                {[
+                  "Nature Landscape View",
+                  "Far enough from everything to feel private",
+                  "Comfortable luxury interiors"
+                ].map((bullet) => (
+                  <li key={bullet} className="flex items-center gap-3 text-sm text-ink/80 font-medium">
+                    <span className="text-gold text-lg">✦</span>
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+
+          <div className="lg:col-span-5 pt-4 lg:pt-14">
+            {/* Pill tabs styling */}
+            <Reveal delay={300}>
+              <div className="flex flex-wrap gap-2.5">
+                {tabs.map((tab) => (
+                  <span
+                    key={tab}
+                    className="inline-block px-4 py-2 bg-white border border-[color:var(--border)] rounded-full text-[11px] tracking-wider font-medium text-forest/90 uppercase hover:border-gold hover:text-gold transition-colors cursor-default"
+                  >
+                    {tab}
+                  </span>
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-6 auto-rows-[220px] lg:auto-rows-[200px]">
+        <div className="mt-12 grid grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-6 auto-rows-[220px] lg:auto-rows-[200px]">
           <Reveal className="col-span-2 lg:col-span-8 row-span-1 lg:row-span-3">
-            <GalleryTile src={gallery2} alt="Row of luxury cottages surrounded by green lawns" caption="40 Acres · 18 Private Villas" />
+            <GalleryTile src={gallery2} alt="Studio Cottage interior" caption="Studio Cottages · Private Sitouts" />
           </Reveal>
           <Reveal delay={120} className="col-span-1 lg:col-span-4 row-span-1 lg:row-span-2">
-            <GalleryTile src={gallery1} alt="Paved path leading to white modern wellness pavilion" caption="Wellness Pavilion" />
+            <GalleryTile src={gallery1} alt="Deluxe Cottage view" caption="Deluxe Cottages" />
           </Reveal>
           <Reveal delay={200} className="col-span-1 lg:col-span-4 row-span-1 lg:row-span-1">
-            <GalleryTile src={galleryVeranda} alt="Private wooden veranda of a villa with a deck lounge chair" caption="Private Verandas" />
+            <GalleryTile src={galleryVeranda} alt="Private wooden deck veranda" caption="Private Verandas" />
           </Reveal>
           <Reveal delay={280} className="col-span-1 lg:col-span-5 row-span-1 lg:row-span-2">
-            <GalleryTile src={gallery3} alt="Glass-walled villa illuminated during golden hour sunset" caption="Sunset Sanctuary" />
+            <GalleryTile src={gallery3} alt="Sunset cottage illumination" caption="Sunset Sanctuary" />
           </Reveal>
           <Reveal delay={360} className="col-span-1 lg:col-span-7 row-span-1 lg:row-span-2">
-            <GalleryTile src={galleryPath} alt="Paved stone path winding through lush green gardens" caption="Healing Forest Paths" />
+            <GalleryTile src={galleryPath} alt="Lush gardens meditation paths" caption="Meditation Gardens" />
           </Reveal>
         </div>
       </div>
@@ -1111,89 +1233,168 @@ function GalleryTile({ src, alt, caption }: { src: string; alt: string; caption:
   );
 }
 
-/* ----------------------------- experts ----------------------------- */
+/* ----------------------------- faq ----------------------------- */
 
-function Experts() {
-  const team = [
-    { n: "Dr. Aarti Mehta", r: "Endocrinology & Diabetology", y: "18 yrs" },
-    { n: "Dr. Karthik Iyer", r: "Ayurveda · Panchakarma", y: "22 yrs" },
-    { n: "Dr. Sneha Kapoor", r: "Functional Nutrition", y: "14 yrs" },
-    { n: "Dr. Vikram Rao", r: "Integrative Cardiology", y: "20 yrs" },
+function FAQ() {
+  const faqs = [
+    {
+      q: "Where is Alpha Wellness Resort located?",
+      a: "We are nestled in serene natural surroundings near Mysuru, Karnataka — easily accessible yet far from the noise."
+    },
+    {
+      q: "Do I need to commit to a wellness program to stay?",
+      a: "Not at all. The Sanctuary welcomes leisure guests as well. Wellness experiences are optional and can be added on request."
+    },
+    {
+      q: "What kind of accommodation can I expect?",
+      a: "Spacious studio and one-bedroom cottages with nature-facing windows, and refined luxury interiors."
+    },
+    {
+      q: "Is the resort suitable for families and couples?",
+      a: "Absolutely. The Sanctuary is designed for couples, families, corporate retreats and solo travelers seeking peace."
+    }
   ];
+
   return (
-    <section id="experts" className="bg-navy text-white py-16 lg:py-24 grain">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <Reveal>
-          <div className="flex items-center gap-3 mb-6">
-            <span className="gold-rule" />
-            <span className="eyebrow text-gold">Meet Your Doctors</span>
+    <section id="faq" className="bg-sand py-16 lg:py-24 border-t border-ink/5">
+      <div className="mx-auto max-w-[1000px] px-6 lg:px-12">
+        <Reveal className="text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="gold-rule w-8 md:w-12" />
+            <span className="eyebrow text-forest">Have Questions?</span>
+            <span className="gold-rule w-8 md:w-12" />
           </div>
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl text-forest leading-[0.98]">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-muted-foreground mt-4 font-light text-sm sm:text-base">
+            Everything you need to know before stepping into the Sanctuary.
+          </p>
         </Reveal>
 
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-          <Reveal className="lg:col-span-5">
-            <div className="relative">
-              <div className="absolute -inset-3 border border-gold/30 rounded-2xl" />
-              <img
-                src={doctorImg}
-                alt="Dr. Rajiv Menon, Chief Medical Officer"
-                className="relative w-full h-[360px] sm:h-[640px] object-cover rounded-2xl"
-                loading="lazy"
-                width={1080}
-                height={1800}
-              />
-            </div>
-          </Reveal>
+        <div className="space-y-4">
+          {faqs.map((faq, idx) => (
+            <Reveal key={idx} delay={idx * 100}>
+              <details className="group bg-white/40 border border-white/60 rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+                <summary className="flex items-center justify-between p-6 cursor-pointer select-none">
+                  <h3 className="font-display text-lg sm:text-xl md:text-2xl text-forest font-medium pr-4">
+                    {faq.q}
+                  </h3>
+                  <span className="relative flex-shrink-0 ml-1.5 w-6 h-6 text-forest/70 transition-transform duration-300 group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="px-6 pb-6 pt-0 border-t border-forest/5">
+                  <p className="text-sm sm:text-base text-ink/75 leading-relaxed font-light">
+                    {faq.a}
+                  </p>
+                </div>
+              </details>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          <div className="lg:col-span-7">
+/* ----------------------------- serenity ----------------------------- */
+
+function Serenity({ onOpenConsult }: { onOpenConsult: () => void }) {
+  const routes = [
+    {
+      title: "From Bangalore",
+      desc: "2 hrs drive (~150 km) via Mysore Road / NH 275.",
+      badge: "⚡ Fastest scenic route",
+      icon: (
+        <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1.76 12h2.44M19.8 12h2.44M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+      )
+    },
+    {
+      title: "From Mysuru City",
+      desc: "15 mins drive (~25 km).",
+      badge: "📍 Just off Mysore–Ooty Highway",
+      icon: (
+        <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      )
+    },
+    {
+      title: "Payana Car Museum",
+      desc: "8 mins drive (~10 km).",
+      badge: "",
+      icon: (
+        <svg className="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5" />
+        </svg>
+      )
+    }
+  ];
+
+  return (
+    <section id="serenity" className="bg-sand py-16 lg:py-24 border-t border-ink/5">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+          <div className="lg:col-span-6">
             <Reveal>
-              <span className="eyebrow text-gold">Chief Medical Officer</span>
-              <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl mt-4 leading-[0.98]">
-                Dr. Rajiv Menon
+              <h2 className="font-display text-3xl sm:text-5xl lg:text-7xl text-forest leading-[0.98]">
+                Find Your Way to Serenity
               </h2>
-              <p className="font-display italic text-xl sm:text-2xl text-white/70 mt-3">
-                MBBS · MD · IFMCP
+              <p className="mt-4 text-base sm:text-lg text-ink/75 font-light leading-relaxed">
+                Tucked away from the city, yet closer than you think.
               </p>
             </Reveal>
-            <Reveal delay={150}>
-              <p className="mt-4 sm:mt-8 text-base sm:text-lg text-white/75 font-light leading-relaxed max-w-xl">
-                With 25 years bridging conventional and functional medicine,
-                Dr. Menon has guided over 3,000 patients to lasting recovery.
-                A certified IFM practitioner trained at Cleveland Clinic, he
-                leads Alpha's research and clinical protocols.
-              </p>
-            </Reveal>
-            <Reveal delay={300}>
-              <div className="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8 max-w-xl">
-                {[
-                  ["25+", "Years"],
-                  ["3,200+", "Patients"],
-                  ["IFMCP", "Certified"],
-                ].map(([v, l]) => (
-                  <div key={l}>
-                    <div className="font-display text-3xl text-gold">{v}</div>
-                    <div className="eyebrow text-white/55 mt-1">{l}</div>
+
+            <div className="mt-10 space-y-8">
+              {routes.map((r, i) => (
+                <Reveal key={r.title} delay={i * 100} className="flex gap-5">
+                  <div className="w-12 h-12 rounded-xl bg-forest/10 flex items-center justify-center flex-shrink-0">
+                    {r.icon}
                   </div>
-                ))}
-              </div>
+                  <div>
+                    <h3 className="font-display text-xl sm:text-2xl text-forest font-semibold">
+                      {r.title}
+                    </h3>
+                    <p className="text-sm text-ink/70 mt-1 leading-relaxed">
+                      {r.desc}
+                    </p>
+                    {r.badge && (
+                      <span className="inline-block mt-2 text-xs text-gold font-medium bg-forest/5 px-2.5 py-1 rounded-full">
+                        {r.badge}
+                      </span>
+                    )}
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={400} className="mt-10">
+              <button
+                onClick={onOpenConsult}
+                className="group inline-flex items-center gap-2.5 px-6 h-14 rounded-full bg-forest text-sand text-[12px] tracking-wider uppercase font-semibold hover:bg-[color:var(--forest-deep)] transition-all cursor-pointer"
+              >
+                <span>Plan My Visit</span>
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </button>
             </Reveal>
           </div>
-        </div>
 
-        <div className="mt-16 lg:mt-20 border-t border-white/10 pt-12">
-          <Reveal>
-            <p className="eyebrow text-white/60 mb-10">Supporting Specialists</p>
-          </Reveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10">
-            {team.map((m, i) => (
-              <Reveal key={m.n} delay={i * 100}>
-                <div className="border-t border-gold/30 pt-6">
-                  <div className="font-display text-2xl text-white">{m.n}</div>
-                  <div className="text-sm text-white/65 mt-2">{m.r}</div>
-                  <div className="eyebrow text-gold mt-3">{m.y} Experience</div>
-                </div>
-              </Reveal>
-            ))}
+          <div className="lg:col-span-6">
+            <Reveal delay={200} className="relative">
+              <div className="absolute -inset-3 border border-forest/15 rounded-3xl" />
+              <img
+                src={problemImg}
+                alt="Scenic road and landscape view near Bengaluru / Mysuru"
+                className="relative w-full h-[320px] sm:h-[500px] object-cover rounded-2xl shadow-xl hover:scale-[1.01] transition-transform duration-700"
+                loading="lazy"
+              />
+            </Reveal>
           </div>
         </div>
       </div>
@@ -1227,15 +1428,15 @@ function FinalCta({ onOpenConsult }: { onOpenConsult: () => void }) {
         </Reveal>
         <Reveal delay={120}>
           <h2 className="font-display text-4xl sm:text-[80px] lg:text-[112px] leading-[0.98]">
-            Your healing journey
+            Ready to get away?
             <br />
-            <em className="italic text-gold">starts today.</em>
+            <em className="italic text-gold">Reserve your stay.</em>
           </h2>
         </Reveal>
         <Reveal delay={260}>
-          <p className="mt-4 sm:mt-8 text-base sm:text-lg lg:text-xl text-white/80 font-light max-w-2xl mx-auto">
-            Take the first step toward lasting health, energy and vitality.
-            A specialist will personally design your recovery path.
+          <p className="mt-4 sm:mt-8 text-base sm:text-lg lg:text-xl text-white/85 font-light max-w-2xl mx-auto">
+            Take the first step toward lasting peace, energy and vitality.
+            Our team will personally design your stay.
           </p>
         </Reveal>
         <Reveal delay={400}>
@@ -1244,11 +1445,11 @@ function FinalCta({ onOpenConsult }: { onOpenConsult: () => void }) {
               onClick={onOpenConsult}
               className="group inline-flex items-center justify-center whitespace-nowrap gap-2.5 px-6 sm:px-9 h-14 sm:h-15 rounded-full bg-gold text-navy text-[11px] sm:text-[13px] tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium hover:bg-[color:var(--gold-soft)] transition-all cursor-pointer"
             >
-              <span>Book Free Consultation</span>
+              <span>Reserve your stay</span>
               <span className="transition-transform group-hover:translate-x-1">→</span>
             </button>
             <a
-              href="https://wa.me/910000000000"
+              href="https://wa.link/8vxvsu"
               className="inline-flex items-center gap-3 px-9 py-4 rounded-full border border-white/40 text-white text-[13px] tracking-[0.2em] uppercase hover:bg-white hover:text-forest transition-all"
             >
               WhatsApp Us
@@ -1258,7 +1459,7 @@ function FinalCta({ onOpenConsult }: { onOpenConsult: () => void }) {
         <Reveal delay={560}>
           <div className="mt-10 inline-flex items-center gap-2 text-white/60 text-sm">
             <span className="w-2 h-2 rounded-full bg-gold shimmer" />
-            Limited consultation slots available each week.
+            Limited villa bookings available each week.
           </div>
         </Reveal>
       </div>
@@ -1276,12 +1477,12 @@ function Footer() {
           <div className="lg:col-span-5">
             <img
               src={logoLight}
-              alt="Alpha Wellness Resort Logo"
+              alt="The Sanctuary Logo"
               className="h-14 sm:h-16 w-auto object-contain mb-4"
             />
             <p className="text-white/60 mt-5 max-w-md font-light leading-relaxed">
-              A private sanctuary where functional medicine, ayurveda and
-              advanced diagnostics converge to reverse chronic disease — naturally.
+              A private sanctuary near Mysuru offering authentic Ayurveda, Panchakarma,
+              and a peaceful luxury environment to slow down and heal.
             </p>
             <div className="hairline mt-8 max-w-xs" />
           </div>
@@ -1289,8 +1490,8 @@ function Footer() {
           <div className="lg:col-span-3">
             <p className="eyebrow text-gold mb-5">Visit</p>
             <p className="text-white/75 leading-relaxed text-sm">
-              Alpha Sanctuary, Forest Drive<br />
-              Coorg, Karnataka 571201<br />
+              Alpha Sanctuary, Melapura<br />
+              near Mysuru, Karnataka 571477<br />
               India
             </p>
           </div>
@@ -1298,9 +1499,9 @@ function Footer() {
           <div className="lg:col-span-2">
             <p className="eyebrow text-gold mb-5">Contact</p>
             <ul className="space-y-2 text-sm text-white/75">
-              <li>+91 90000 00000</li>
-              <li>hello@alphawellness.com</li>
-              <li><a href="https://wa.me/910000000000" className="hover:text-gold transition-colors">WhatsApp →</a></li>
+              <li>+91 99457 69973</li>
+              <li>hello@alphawellnessresort.com</li>
+              <li><a href="https://wa.link/8vxvsu" className="hover:text-gold transition-colors">WhatsApp →</a></li>
             </ul>
           </div>
 
@@ -1316,7 +1517,7 @@ function Footer() {
 
         <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-4 text-xs text-white/45">
           <span>© {new Date().getFullYear()} Alpha Wellness Resort · All rights reserved.</span>
-          <span className="eyebrow">Crafted with care · Coorg, India</span>
+          <span className="eyebrow">Crafted with care · Mysuru, India</span>
         </div>
       </div>
     </footer>
@@ -1335,12 +1536,12 @@ function StickyCta({ onOpenConsult }: { onOpenConsult: () => void }) {
   return (
     <button
       onClick={onOpenConsult}
-      aria-label="Book free consultation"
+      aria-label="Reserve your stay"
       className={`fixed bottom-6 left-6 z-40 hidden md:inline-flex items-center gap-3 px-6 h-13 py-4 rounded-full bg-forest text-sand text-[12px] tracking-[0.18em] uppercase shadow-2xl transition-all duration-500 cursor-pointer ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
         }`}
     >
       <span className="w-2 h-2 rounded-full bg-gold shimmer" />
-      Book Free Consultation
+      Reserve your stay
     </button>
   );
 }
@@ -1348,7 +1549,7 @@ function StickyCta({ onOpenConsult }: { onOpenConsult: () => void }) {
 function WhatsAppFloat() {
   return (
     <a
-      href="https://wa.me/910000000000"
+      href="https://wa.link/8vxvsu"
       aria-label="Chat on WhatsApp"
       className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gold text-navy flex items-center justify-center shadow-2xl float-y hover:scale-110 transition-transform"
     >
